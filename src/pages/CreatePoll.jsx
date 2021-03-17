@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function CreatePoll() {
   const [pollOptions, setPollOptions] = useState(2);
   const formRef = useRef(null);
+  const history = useHistory();
 
   async function handleSubmit(e) {
     const formData = new FormData(formRef.current);
@@ -29,6 +31,7 @@ export default function CreatePoll() {
       });
       const data = await response.json();
       console.log(data);
+      history.push(`/${data._id}`);
     } catch (err) {
       console.error(err);
     }

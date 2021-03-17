@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import CreatePoll from "./pages/CreatePoll";
+import PollResults from "./pages/PollResults";
+import VotePoll from "./pages/VotePoll";
 
 function App() {
   return (
@@ -8,10 +10,10 @@ function App() {
       <div className="App">
         <Switch>
           <Route path="/:id/results">
-            <h1>Poll Results View</h1>
+            <PollResults />
           </Route>
           <Route path="/:id">
-            <h1>Poll Voting View</h1>
+            <VotePoll />
           </Route>
           <Route path="/">
             <CreatePoll />
