@@ -20,8 +20,9 @@ async function createPoll(req, res) {
       message: "Poll requires at least 2 choices.",
     });
   }
+  newPoll.choices = newPoll.choices.map((choice) => ({ value: choice }));
   try {
-    const poll = await Poll.create(req.body);
+    const poll = await Poll.create(newPoll);
     res.json(poll);
   } catch (err) {
     res.status(500).json(err);
