@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 export default function PollResults() {
-  // const location = useLocation();
   const { id } = useParams();
-  // const [pollData, setPollData] = useState(location.state || null);
   const [pollData, setPollData] = useState(null);
 
   useEffect(() => {
@@ -22,9 +20,9 @@ export default function PollResults() {
   });
 
   useEffect(() => {
-    const ws = new WebSocket(process.env.REACT_APP_PRODUCTION_URL || `ws://localhost:8080/${id}`);
+    const wsUrl = process.env.REACT_APP_PRODUCTION_URL || "ws://localhost:8080";
+    const ws = new WebSocket(`${wsUrl}/${id}`);
     ws.addEventListener("message", (event) => {
-      // console.log(event.data);
       setPollData(JSON.parse(event.data));
     });
     ws.addEventListener("error", (e) => {

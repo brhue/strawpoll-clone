@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const http = require("http");
+const path = require("path");
 const WebSocket = require("ws");
 const { Poll } = require("./models");
 
@@ -25,8 +26,13 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../build")));
 
 app.use("/api", require("./routes"));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build/index.html"));
+});
 
 const wss = new WebSocket.Server({ noServer: true });
 const server = http.createServer(app);
@@ -34,11 +40,13 @@ const server = http.createServer(app);
 const wsConnections = {};
 
 wss.on("connection", (ws, req) => {
-  const { pathname } = new URL(req.url, "http://localhost");
-  const room = wsConnections[pathname.slice(1)];
+  // Need a base with a relative URL or it throws.
+  let { pathname } = new URL(req.url, "http://localhost");
+  pathname = pathname.slice(1);
+  const room = wsConnections[pathname];
 
   if (!room) {
-    wsConnections[pathname.slice(1)] = [ws];
+    wsConnections[pathname] = [ws];
   } else {
     room.push(ws);
   }
