@@ -16,3 +16,6 @@ to start the backend server and in a seperate one
 npm start
 ```
 to start up the development server for the react frontend.
+
+## License
+[MIT](./LICENSE)
