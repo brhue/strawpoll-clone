@@ -22,7 +22,7 @@ export default function PollResults() {
   });
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8080/${id}`);
+    const ws = new WebSocket(process.env.REACT_APP_PRODUCTION_URL || `ws://localhost:8080/${id}`);
     ws.addEventListener("message", (event) => {
       // console.log(event.data);
       setPollData(JSON.parse(event.data));
