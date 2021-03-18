@@ -60,6 +60,7 @@ async function updatePoll(req, res) {
         ],
       }
     );
+    Poll.emit("vote", poll);
     res.json(poll);
   } catch (err) {
     res.status(500).json(err);

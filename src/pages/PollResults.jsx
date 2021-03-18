@@ -21,6 +21,23 @@ export default function PollResults() {
     getPollData();
   });
 
+  useEffect(() => {
+    const ws = new WebSocket(`ws://localhost:8080/${id}`);
+    ws.addEventListener("message", (event) => {
+      // console.log(event.data);
+      setPollData(JSON.parse(event.data));
+    });
+    ws.addEventListener("error", (e) => {
+      console.error("error:", e);
+    });
+    ws.addEventListener("close", (e) => {
+      console.log("closed:", e);
+    });
+    return () => {
+      ws.close();
+    };
+  }, [id]);
+
   if (!pollData) return <h1>Loading...</h1>;
   return (
     <>
